@@ -11,7 +11,14 @@ export const Layout = ({ children, title }) => (
           {children}
         </Content>
       </ContentWrapper>
-      <Footer href="#">Feature request</Footer>
+
+      <Footer>
+        <p>
+          <Link href="#">Logout</Link>
+          <span style={{ verticalAlign: 'middle' }}>·</span>
+          <Link href="#">Feature request</Link>
+        </p>
+      </Footer>
     </Page>
   </Root>
 );
@@ -41,11 +48,14 @@ const Content = styled.div`
   flex-shrink: 1;
 `;
 
-const Footer = styled.a`
+const Footer = styled.div`
+  display: flex;
+`;
+
+const Link = styled.a`
   text-align: center;
-  margin: 0;
+  margin: 0.5em;
   font-size: 0.75em;
-  padding: 0.5em;
   width: 100%;
   color: inherit;
 `;
