@@ -1,61 +1,68 @@
 import styled from '@emotion/styled';
-import { Formik } from 'formik';
+import axios from 'axios';
+import { useState } from 'react';
 import { Button, Layout } from '../components';
 
-export const Login = () => (
-  <Layout title="Eldes Gates">
-    <Formik
-      initialValues={{ phone: '', password: '' }}
-      onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          setSubmitting(false);
-        }, 400);
-      }}
-      children={({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isSubmitting,
-      }) => (
-        <form onSubmit={handleSubmit}>
-          <Label>
-            Phone number
-            <Input
-              name="phone"
-              type="tel"
-              inputmode="tel"
-              required
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.phone}
-            />
-            {errors.phone && touched.phone && errors.phone}
-          </Label>
+export const Login = () => {
+  const [phone, setPhone] = useState('');
+  const [password, setPassword] = useState('');
 
-          <Label>
-            Password
-            <Input
-              type="password"
-              name="password"
-              required
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.password}
-            />
-            {errors.password && touched.password && errors.password}
-          </Label>
+  const handleChangePhone = (event) => {
+    setPhone(event.target.value);
+  };
 
-          <Button type="submit" disabled={isSubmitting}>
-            Login
-          </Button>
-        </form>
-      )}
-    />
-  </Layout>
-);
+  const handleChangePassword = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const sendForm = (event) => {
+    event.preventDefault();
+
+    axios
+      .post('https://security.eldes.lt/api1?gatelogin=1', {
+        login: phone,
+        psw: password,
+      })
+      .then((response) => {
+        response.data;
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+  return (
+    <Layout title="Eldes Gates">
+      <form onSubmit={sendForm}>
+        <Label>
+          Phone number
+          <Input
+            name="phone"
+            type="tel"
+            inputmode="tel"
+            required
+            value={phone}
+            onChange={handleChangePhone}
+          />
+          {/* {errors.phone && touched.phone && errors.phone} */}
+        </Label>
+
+        <Label>
+          Password
+          <Input
+            type="password"
+            name="password"
+            required
+            value={password}
+            onChange={handleChangePassword}
+          />
+          {/* {errors.password && touched.password && errors.password} */}
+        </Label>
+
+        <Button type="submit">Login</Button>
+      </form>
+    </Layout>
+  );
+};
 
 const Label = styled.label`
   display: block;
