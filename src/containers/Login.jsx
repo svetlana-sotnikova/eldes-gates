@@ -6,6 +6,7 @@ import { Button, Layout } from '../components';
 export const Login = () => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   const handleChangePhone = (event) => {
     setPhone(event.target.value);
@@ -19,15 +20,23 @@ export const Login = () => {
     event.preventDefault();
 
     axios
-      .post('https://security.eldes.lt/api1?gatelogin=1', {
+      .post('/api/eldes/login', {
         login: phone,
         psw: password,
       })
       .then((response) => {
-        response.data;
+        if (response.data.error) {
+          setError(response.data.error.msg);
+        }
       })
       .catch((error) => {
         console.error(error);
+
+        try {
+          setError(JSON.stringify(error.data, null, 2));
+        } catch {
+          setError(error);
+        }
       });
   };
   return (
@@ -58,6 +67,8 @@ export const Login = () => {
           {/* {errors.password && touched.password && errors.password} */}
         </Label>
 
+        <Error>{error}</Error>
+
         <Button type="submit">Login</Button>
       </form>
     </Layout>
@@ -80,4 +91,8 @@ const Input = styled.input`
   border: 1px solid lightgray;
   margin: 0.5em 0;
   padding: 0.75em 1em;
+`;
+
+const Error = styled.p`
+  color: red;
 `;
