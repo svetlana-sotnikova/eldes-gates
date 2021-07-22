@@ -1,15 +1,19 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Button, Layout } from '../components';
 
 export const Login = () => {
-  const [phone, setPhone] = useState('');
+  const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const router = useRouter();
+
+  localStorage['login'] = JSON.stringify({ login });
 
   const handleChangePhone = (event) => {
-    setPhone(event.target.value);
+    setLogin(event.target.value);
   };
 
   const handleChangePassword = (event) => {
@@ -21,12 +25,17 @@ export const Login = () => {
 
     axios
       .post('/api/eldes/login', {
-        login: phone,
+        login: login,
         psw: password,
       })
       .then((response) => {
         if (response.data.error) {
           setError(response.data.error.msg);
+        } else {
+          if (typeof window !== 'undefined') {
+            localStorage['deviceList'] = JSON.stringify(response.data);
+          }
+          router.push('/');
         }
       })
       .catch((error) => {
@@ -49,7 +58,7 @@ export const Login = () => {
             type="tel"
             inputmode="tel"
             required
-            value={phone}
+            value={login}
             onChange={handleChangePhone}
           />
           {/* {errors.phone && touched.phone && errors.phone} */}
