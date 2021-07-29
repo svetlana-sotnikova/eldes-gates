@@ -1,1 +1,1 @@
-export { Panel as default } from '../src/containers/Panel';
+export { DeviceList as default } from '../src/containers/DeviceList';
