@@ -4,6 +4,7 @@ import { Button } from '../../components';
 
 export const ActionList = ({ id, deviceKey: key, userid }) => {
   const [actions, setActions] = useState(null);
+  const [vars, setVars] = useState(null);
 
   useEffect(() => {
     axios
@@ -17,13 +18,18 @@ export const ActionList = ({ id, deviceKey: key, userid }) => {
       })
       .then((response) => {
         setActions(response.data.names);
+        setVars(response.data.vars);
       })
       .catch((error) => console.error(error));
   }, []);
 
-  return actions !== null
-    ? Object.keys(actions).map((actionId, index) => (
-        <Button key={index}>{actionId}</Button>
-      ))
+  return actions !== null && vars !== null
+    ? Object.keys(actions).map((actionId, index) => {
+        if (vars[actionId] === undefined) {
+          return null;
+        }
+
+        return <Button key={index}>{actions[actionId]}</Button>;
+      })
     : null;
 };
