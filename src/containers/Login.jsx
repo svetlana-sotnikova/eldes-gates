@@ -10,7 +10,9 @@ export const Login = () => {
   const [error, setError] = useState('');
   const router = useRouter();
 
-  localStorage['login'] = JSON.stringify({ login });
+  if (typeof window !== 'undefined') {
+    localStorage['login'] = JSON.stringify(login);
+  }
 
   const handleChangePhone = (event) => {
     setLogin(event.target.value);
