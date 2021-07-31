@@ -2,15 +2,16 @@ import axios from 'axios';
 
 export default ({ body, method }, res) => {
   if (method === 'POST') {
+    const actionNumber = body?.actionId.replace(/^\d+/g, '');
+
     axios
       .post(
-        'https://security.eldes.lt/api1?update=device',
-        `id=${body?.id}&key=${body?.key}`,
-        {
-          headers: {
-            Host: 'security.eldes.lt',
-          },
-        }
+        `https://security.eldes.lt/api1?update=device&id=${body?.id}&key=${body?.key}`,
+        `json={
+          "vars" : {
+            "OPN" : "${actionNumber};${body?.login}"
+          }
+        }`
       )
       .then((response) => {
         res.status(response.status);

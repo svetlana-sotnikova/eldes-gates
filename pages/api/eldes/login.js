@@ -5,12 +5,7 @@ export default ({ body, method }, res) => {
     axios
       .post(
         'https://security.eldes.lt/api1?gatelogin=1',
-        `login=${body?.login}&psw=${body?.psw}`,
-        {
-          headers: {
-            Host: 'security.eldes.lt',
-          },
-        }
+        `login=${body?.login}&psw=${body?.psw}`
       )
       .then((response) => {
         res.status(response.status);
