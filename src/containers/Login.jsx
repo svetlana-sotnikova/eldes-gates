@@ -11,7 +11,7 @@ export const Login = () => {
   const router = useRouter();
 
   if (typeof window !== 'undefined') {
-    localStorage['login'] = JSON.stringify(login);
+    localStorage.removeItem('deviceList');
   }
 
   const handleChangePhone = (event) => {
@@ -36,6 +36,7 @@ export const Login = () => {
         } else {
           if (typeof window !== 'undefined') {
             localStorage['deviceList'] = JSON.stringify(response.data);
+            localStorage['login'] = JSON.stringify(login);
           }
           router.push('/');
         }

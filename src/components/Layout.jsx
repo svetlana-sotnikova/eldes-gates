@@ -14,7 +14,7 @@ export const Layout = ({ children, title }) => (
 
       <Footer>
         <p>
-          <Link href="#">Logout</Link>
+          <Link href="/login">Logout</Link>
           <span style={{ verticalAlign: 'middle' }}>·</span>
           <Link href="#">Feature request</Link>
         </p>
