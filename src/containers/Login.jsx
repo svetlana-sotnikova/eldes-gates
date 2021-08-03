@@ -8,6 +8,7 @@ export const Login = () => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   if (typeof window !== 'undefined') {
@@ -16,14 +17,17 @@ export const Login = () => {
 
   const handleChangePhone = (event) => {
     setLogin(event.target.value);
+    setError(null);
   };
 
   const handleChangePassword = (event) => {
     setPassword(event.target.value);
+    setError(null);
   };
 
   const sendForm = (event) => {
     event.preventDefault();
+    setIsLoading(true);
 
     axios
       .post('/api/eldes/login', {
@@ -38,6 +42,7 @@ export const Login = () => {
             localStorage['deviceList'] = JSON.stringify(response.data);
             localStorage['login'] = JSON.stringify(login);
           }
+
           router.push('/');
         }
       })
@@ -49,6 +54,9 @@ export const Login = () => {
         } catch {
           setError(error);
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
   return (
@@ -79,9 +87,11 @@ export const Login = () => {
           {/* {errors.password && touched.password && errors.password} */}
         </Label>
 
-        <Error>{error}</Error>
+        {error && <Error>{error}</Error>}
 
-        <Button type="submit">Login</Button>
+        <Button disabled={isLoading} type="submit">
+          {isLoading ? 'loading…' : 'Login'}
+        </Button>
       </form>
     </Layout>
   );

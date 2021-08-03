@@ -45,21 +45,21 @@ export const ActionList = ({ id, deviceKey: key, userid }) => {
 
   return (
     <>
-      {actions !== null && vars !== null
-        ? Object.keys(actions).map((actionId, index) => {
-            if (vars[actionId] === undefined) {
-              return null;
-            }
+      {actions &&
+        vars &&
+        Object.keys(actions).map((actionId, index) => {
+          if (vars[actionId] === undefined) {
+            return null;
+          }
 
-            return (
-              <Button onClick={() => openAction(actionId)} key={index}>
-                {actions[actionId]}
-              </Button>
-            );
-          })
-        : null}
+          return (
+            <Button onClick={() => openAction(actionId)} key={index}>
+              {actions[actionId]}
+            </Button>
+          );
+        })}
 
-      {isLoading ? 'loading…' : null}
+      {isLoading && 'loading…'}
     </>
   );
 };
