@@ -6,9 +6,11 @@ export const ActionList = ({ id, deviceKey: key, userid }) => {
   const [actions, setActions] = useState(null);
   const [vars, setVars] = useState(null);
   const [login, setLogin] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setLogin(JSON.parse(localStorage.login));
+    setIsLoading(true);
 
     axios
       .get(`/api/eldes/device-actions`, {
@@ -23,7 +25,10 @@ export const ActionList = ({ id, deviceKey: key, userid }) => {
         setActions(response.data.names);
         setVars(response.data.vars);
       })
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   const openAction = (actionId) => {
@@ -38,17 +43,23 @@ export const ActionList = ({ id, deviceKey: key, userid }) => {
       .catch((error) => console.error(error));
   };
 
-  return actions !== null && vars !== null
-    ? Object.keys(actions).map((actionId, index) => {
-        if (vars[actionId] === undefined) {
-          return null;
-        }
+  return (
+    <>
+      {actions !== null && vars !== null
+        ? Object.keys(actions).map((actionId, index) => {
+            if (vars[actionId] === undefined) {
+              return null;
+            }
 
-        return (
-          <Button onClick={() => openAction(actionId)} key={index}>
-            {actions[actionId]}
-          </Button>
-        );
-      })
-    : null;
+            return (
+              <Button onClick={() => openAction(actionId)} key={index}>
+                {actions[actionId]}
+              </Button>
+            );
+          })
+        : null}
+
+      {isLoading ? 'loading…' : null}
+    </>
+  );
 };
