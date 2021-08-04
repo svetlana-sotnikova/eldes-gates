@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 import axios from 'axios';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Layout } from '../components';
 
 export const Login = () => {
@@ -11,9 +11,9 @@ export const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  if (typeof window !== 'undefined') {
+  useEffect(() => {
     localStorage.removeItem('deviceList');
-  }
+  }, []);
 
   const handleChangePhone = (event) => {
     setLogin(event.target.value);
