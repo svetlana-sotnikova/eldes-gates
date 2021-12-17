@@ -30,10 +30,9 @@ export const Login = () => {
     setIsLoading(true);
 
     axios
-      .post('/api/eldes/login', {
-        login: login,
-        psw: password,
-      })
+      .get(
+        `https://functions.yandexcloud.net/d4et1bhk1434am9k844f?login=${login}&psw=${password}`
+      )
       .then((response) => {
         if (response.data.error) {
           setError(response.data.error.msg);
