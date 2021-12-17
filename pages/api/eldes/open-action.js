@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default ({ body, method }, res) => {
   if (method === 'POST') {
-    const actionNumber = body?.actionId.replace(/^\d+/g, '');
+    const actionNumber = body?.actionId.replace(/[^\d]+/g, '');
 
     axios
       .post(
