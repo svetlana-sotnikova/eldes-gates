@@ -13,7 +13,7 @@ export const ActionList = ({ id, deviceKey: key, userid }) => {
     setIsLoading(true);
 
     axios
-      .get(`/api/eldes/device-actions`, {
+      .get(`https://functions.yandexcloud.net/d4eub3rh55n5ffsfplua`, {
         params: {
           gate: 1,
           id,
