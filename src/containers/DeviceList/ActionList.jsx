@@ -33,11 +33,13 @@ export const ActionList = ({ id, deviceKey: key, userid }) => {
 
   const openAction = (actionId) => {
     axios
-      .post('/api/eldes/open-action', {
-        id,
-        key,
-        login,
-        actionId,
+      .get('https://functions.yandexcloud.net/d4elbrhs1lg6a879npvr', {
+        params: {
+          id,
+          key,
+          login,
+          actionId,
+        },
       })
       .then((response) => console.log(response))
       .catch((error) => console.error(error));
